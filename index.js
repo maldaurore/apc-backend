@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import medicoRoutes from './routes/medicoRoutes.js';
 import pacienteRoutes from './routes/pacienteRoutes.js';
+import citasRoutes from './routes/citasRoutes.js';
 import cors from "cors";
 
 const PORT = process.env.PORT || 4000;
@@ -28,6 +29,7 @@ app.use(cors(corsOptions));
 
 app.use('/api/medicos', medicoRoutes);
 app.use('/api/pacientes', pacienteRoutes);
+app.use('/api/citas', citasRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor funcionando en el puerto ${PORT}`);

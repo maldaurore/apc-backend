@@ -48,6 +48,7 @@ const actualizarPaciente = async (req, res) => {
   }
 
   paciente = Object.assign(paciente, req.body);
+  await paciente.save();
 
   res.json(paciente);
 }
