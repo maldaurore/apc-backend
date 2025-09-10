@@ -9,15 +9,6 @@ const pacienteSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    fecha: {
-      type: Date,
-      required: true,
-      default: Date.now(),
-    },
-    sintomas: {
-      type: String,
-      required: true,
-    },
     medico: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Medico',

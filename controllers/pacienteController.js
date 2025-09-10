@@ -76,10 +76,31 @@ const eliminarPaciente = async (req, res) => {
   
 }
 
+const verificarEmail = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ msg: 'El correo electrónico es obligatorio' });
+  }
+
+  try {
+    const paciente = await Paciente.findOne({ email });
+    if (paciente) {
+      return res.json(paciente);
+    } else {
+      return res.json(false);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: 'Error al verificar el correo electrónico' });
+  }
+}
+
 export {
   agregarPaciente,
   obtenerPacientes,
   obtenerPaciente,
   actualizarPaciente,
-  eliminarPaciente
+  eliminarPaciente,
+  verificarEmail
 }

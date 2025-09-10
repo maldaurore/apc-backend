@@ -4,7 +4,8 @@ import {
   obtenerPacientes, 
   obtenerPaciente,
   actualizarPaciente,
-  eliminarPaciente
+  eliminarPaciente,
+  verificarEmail
 } from "../controllers/pacienteController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -19,5 +20,7 @@ router.route('/:id')
   .put(checkAuth, actualizarPaciente)
   .delete(checkAuth, eliminarPaciente);
 
+router.route('/verificar-email')
+  .post(verificarEmail);
 
 export default router;
