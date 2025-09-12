@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import generarId from '../helpers/generarId.js';
 import bcrypt from 'bcrypt';
 
-const medicoSchema = mongoose.Schema({
+const profesionalSchema = mongoose.Schema({
   nombre: {
     type: String,
     required: true,
@@ -37,7 +37,7 @@ const medicoSchema = mongoose.Schema({
   }
 });
 
-medicoSchema.pre('save', async function (next) {
+profesionalSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
   }
@@ -46,9 +46,9 @@ medicoSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-medicoSchema.methods.comprobarPassword = async function (passwordFormulario) {
+profesionalSchema.methods.comprobarPassword = async function (passwordFormulario) {
   return await bcrypt.compare(passwordFormulario, this.password);
 }
 
-const Medico = mongoose.model('Medico', medicoSchema);
-export default Medico;
+const Profesional = mongoose.model('Profesional', profesionalSchema, 'profesionales');
+export default Profesional;

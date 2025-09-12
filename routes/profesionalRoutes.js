@@ -1,5 +1,5 @@
 import express from "express";
-import { perfil, registrar, confirmar, autenticar, olvidePassword, nuevoPassword, comprobarToken, actualizarPerfil, actualizarPassword } from "../controllers/medicoController.js";
+import { perfil, registrar, confirmar, autenticar, olvidePassword, nuevoPassword, comprobarToken, actualizarPerfil, actualizarPassword } from "../controllers/profesionalController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 const router = express.Router();
 

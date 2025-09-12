@@ -2,12 +2,12 @@ import emailOlvidePassword from "../helpers/emailOlvidePassword.js";
 import emailRegistro from "../helpers/emailRegistro.js";
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
-import Medico from "../models/Medico.js";
+import Profesional from "../models/Profesional.js";
 
 const registrar = async (req, res) => {
   const { email, nombre } = req.body;
 
-  const existeUsuario = await Medico.findOne({ email });
+  const existeUsuario = await Profesional.findOne({ email });
 
   if (existeUsuario) {
     const error = new Error("El email ya está registrado");
@@ -15,15 +15,15 @@ const registrar = async (req, res) => {
   }
 
   try {
-    const medico = new Medico(req.body);
-    const medicoGuardado = await medico.save();
+    const profesional = new Profesional(req.body);
+    const profesionalGuardado = await profesional.save();
 
     await emailRegistro({
       email,
       nombre,
-      token: medicoGuardado.token,
+      token: profesionalGuardado.token,
     });
-    res.json(medicoGuardado);
+    res.json(profesionalGuardado);
   } catch (error) {
     console.log(error);
     return res.status(400).json({ msg: "Error al registrar el usuario" });
@@ -31,14 +31,14 @@ const registrar = async (req, res) => {
 };
 
 const perfil = (req, res) => {
-  const { medico } = req;
-  res.json({ medico });
+  const { profesional } = req;
+  res.json({ profesional });
 }
 
 const confirmar = async (req, res) => {
   const { token } = req.params;
 
-  const usuarioConfirmar = await Medico.findOne({ token });
+  const usuarioConfirmar = await Profesional.findOne({ token });
 
   if (!usuarioConfirmar) {
     const error = new Error("Token no válido");
@@ -59,7 +59,7 @@ const confirmar = async (req, res) => {
 const autenticar = async (req, res) => {
   const { email, password } = req.body;
 
-  const usuario = await Medico.findOne({ email });
+  const usuario = await Profesional.findOne({ email });
 
   // Comprobar si el usuario existe
   if (!usuario) {
@@ -91,20 +91,20 @@ const autenticar = async (req, res) => {
 const olvidePassword = async (req, res) => {
   const { email } = req.body;
 
-  const existeMedico = await Medico.findOne({ email });
-  if (!existeMedico) {
+  const existeProfesional = await Profesional.findOne({ email });
+  if (!existeProfesional) {
     const error = new Error("El email no está registrado");
     return res.status(400).json({ msg: error.message });
   }
 
   try {
-    existeMedico.token = generarId();
-    await existeMedico.save();
+    existeProfesional.token = generarId();
+    await existeProfesional.save();
 
     emailOlvidePassword({
       email,
-      nombre: existeMedico.nombre,
-      token: existeMedico.token,
+      nombre: existeProfesional.nombre,
+      token: existeProfesional.token,
     });
 
     res.json({ msg: "Hemos enviado un email con las instrucciones" });
@@ -117,7 +117,7 @@ const olvidePassword = async (req, res) => {
 const comprobarToken = async (req, res) => {
   const { token } = req.params;
 
-  const tokenValido = await Medico.findOne({ token });
+  const tokenValido = await Profesional.findOne({ token });
   if (!tokenValido) {
     const error = new Error("Token no válido");
     return res.status(400).json({ msg: error.message });
@@ -131,16 +131,16 @@ const nuevoPassword = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
 
-  const medico = await Medico.findOne({ token });
-  if (!medico) {
+  const profesional = await Profesional.findOne({ token });
+  if (!profesional) {
     const error = new Error("Token no válido");
     return res.status(400).json({ msg: error.message });
   }
 
   try {
-    medico.token = null;
-    medico.password = password;
-    await medico.save();
+    profesional.token = null;
+    profesional.password = password;
+    await profesional.save();
     res.json({ msg: "Contraseña modificada correctamente" });
   } catch (error) {
     console.log(error);
@@ -153,26 +153,26 @@ const actualizarPerfil = async (req, res) => {
   const { nombre, email, telefono } = req.body;
 
   try {
-    const medico = await Medico.findById(id);
-    if (!medico) {
-      const error = new Error("Médico no encontrado");
+    const profesional = await Profesional.findById(id);
+    if (!profesional) {
+      const error = new Error("Profesional no encontrado");
       return res.status(404).json({ msg: error.message });
     }
 
-    if(medico.email !== email) {
-      const existeEmail = await Medico.findOne({ email });
+    if(profesional.email !== email) {
+      const existeEmail = await Profesional.findOne({ email });
       if (existeEmail) {
         const error = new Error("Este email ya está en uso");
         return res.status(400).json({ msg: error.message });
       }
     }
 
-    medico.nombre = nombre || medico.nombre;
-    medico.email = email || medico.email;
-    medico.telefono = telefono || medico.telefono;
+    profesional.nombre = nombre || profesional.nombre;
+    profesional.email = email || profesional.email;
+    profesional.telefono = telefono || profesional.telefono;
 
-    const medicoActualizado = await medico.save();
-    res.json({ medico: medicoActualizado });
+    const profesionalActualizado = await profesional.save();
+    res.json({ profesional: profesionalActualizado });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ msg: "Error al actualizar el perfil" });
@@ -184,19 +184,19 @@ const actualizarPassword = async (req, res) => {
   const { passwordActual, passwordNueva } = req.body;
 
   try {
-    const medico = await Medico.findById(id);
-    if (!medico) {
-      const error = new Error("Médico no encontrado");
+    const profesional = await Profesional.findById(id);
+    if (!profesional) {
+      const error = new Error("Profesional no encontrado");
       return res.status(404).json({ msg: error.message });
     }
 
-    if (!await medico.comprobarPassword(passwordActual)) {
+    if (!await profesional.comprobarPassword(passwordActual)) {
       const error = new Error("La contraseña actual es incorrecta");
       return res.status(403).json({ msg: error.message });
     }
 
-    medico.password = passwordNueva;
-    await medico.save();
+    profesional.password = passwordNueva;
+    await profesional.save();
     res.json({ msg: "Contraseña actualizada correctamente" });
   } catch (error) {
     console.log(error);

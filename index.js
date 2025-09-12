@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import medicoRoutes from './routes/medicoRoutes.js';
+import profesionalRoutes from './routes/profesionalRoutes.js';
 import pacienteRoutes from './routes/pacienteRoutes.js';
 import citasRoutes from './routes/citasRoutes.js';
 import cors from "cors";
@@ -27,7 +27,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use('/api/medicos', medicoRoutes);
+app.use('/api/profesionales', profesionalRoutes);
 app.use('/api/pacientes', pacienteRoutes);
 app.use('/api/citas', citasRoutes);
 

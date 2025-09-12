@@ -2,8 +2,8 @@ import Paciente from "../models/Paciente.js"
 
 const agregarPaciente = async (req, res) => {
   const paciente = new Paciente(req.body);
-  paciente.medico = req.medico._id;
-  
+  paciente.profesional = req.profesional._id;
+
   try {
     const pacienteGuardado = await paciente.save();
     res.json(pacienteGuardado);
@@ -14,7 +14,7 @@ const agregarPaciente = async (req, res) => {
 }
 
 const obtenerPacientes = async (req, res) => {
-  const pacientes = await Paciente.find().where('medico').equals(req.medico._id).sort({ createdAt: -1 });
+  const pacientes = await Paciente.find().where('profesional').equals(req.profesional._id).sort({ createdAt: -1 });
   res.json(pacientes);
 }
 
@@ -27,7 +27,7 @@ const obtenerPaciente = async (req, res) => {
     return res.status(404).json({ msg: 'Paciente no encontrado' });
   }
 
-  if (paciente.medico.toString() !== req.medico._id.toString()) {
+  if (paciente.profesional.toString() !== req.profesional._id.toString()) {
     return res.status(403).json({ msg: 'Acción no permitida' });
   }
 
@@ -43,7 +43,7 @@ const actualizarPaciente = async (req, res) => {
     return res.status(404).json({ msg: 'Paciente no encontrado' });
   }
 
-  if (paciente.medico.toString() !== req.medico._id.toString()) {
+  if (paciente.profesional.toString() !== req.profesional._id.toString()) {
     return res.status(403).json({ msg: 'Acción no permitida' });
   }
 
@@ -62,7 +62,7 @@ const eliminarPaciente = async (req, res) => {
     return res.status(404).json({ msg: 'Paciente no encontrado' });
   }
 
-  if (paciente.medico.toString() !== req.medico._id.toString()) {
+  if (paciente.profesional.toString() !== req.profesional._id.toString()) {
     return res.status(403).json({ msg: 'Acción no permitida' });
   }
 

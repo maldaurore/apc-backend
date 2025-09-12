@@ -17,9 +17,9 @@ const citaSchema = mongoose.Schema({
       type: Date,
       required: true,
     },
-    medico: {
+    profesional: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Medico',
+      ref: 'Profesional',
     },
   }, 
   {

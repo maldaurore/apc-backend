@@ -9,9 +9,9 @@ const pacienteSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    medico: {
+    profesional: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Medico',
+      ref: 'Profesional',
     },
   }, 
   {

@@ -16,7 +16,7 @@ const guardarCita = async (req, res) => {
       title: paciente.nombre,
       start,
       end,
-      medico: req.medico._id,
+      profesional: req.profesional._id,
     });
 
     await nuevaCita.save();
@@ -29,7 +29,7 @@ const guardarCita = async (req, res) => {
 
 const obtenerCitas = async (req, res) => {
   try {
-    const citas = await Cita.find().where('medico').equals(req.medico._id);
+    const citas = await Cita.find().where('profesional').equals(req.profesional._id);
     res.json(citas);
   } catch (error) {
     console.error(error);
