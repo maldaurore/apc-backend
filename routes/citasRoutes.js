@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.route('/')
   .get(checkAuth, obtenerCitas)
-  .post(checkAuth, guardarCita);
+  .post(guardarCita);
 
 export default router;

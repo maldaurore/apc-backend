@@ -30,6 +30,16 @@ const registrar = async (req, res) => {
   }
 };
 
+const obtenerProfesionales = async (req, res) => {
+  try {
+    const profesionales = await Profesional.find();
+    res.json(profesionales);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error al obtener los profesionales" });
+  }
+};
+
 const perfil = (req, res) => {
   const { profesional } = req;
   res.json({ profesional });
@@ -214,4 +224,5 @@ export {
   nuevoPassword,
   actualizarPerfil,
   actualizarPassword,
+  obtenerProfesionales,
 }

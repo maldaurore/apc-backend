@@ -3,7 +3,7 @@ import Paciente from "../models/Paciente.js";
 import mongoose from 'mongoose';
 
 const guardarCita = async (req, res) => {
-  const { pacienteId, start, end } = req.body;
+  const { pacienteId, start, end, profesionalId } = req.body;
 
   try {
     const paciente = await Paciente.findById(new mongoose.Types.ObjectId(pacienteId.trim()));
@@ -16,7 +16,7 @@ const guardarCita = async (req, res) => {
       title: paciente.nombre,
       start,
       end,
-      profesional: req.profesional._id,
+      profesional: req.profesional ? req.profesional._id : profesionalId,
     });
 
     await nuevaCita.save();

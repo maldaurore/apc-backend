@@ -1,9 +1,10 @@
 import express from "express";
-import { perfil, registrar, confirmar, autenticar, olvidePassword, nuevoPassword, comprobarToken, actualizarPerfil, actualizarPassword } from "../controllers/profesionalController.js";
+import { perfil, registrar, confirmar, autenticar, olvidePassword, nuevoPassword, comprobarToken, actualizarPerfil, actualizarPassword, obtenerProfesionales } from "../controllers/profesionalController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.post("/", registrar);
+router.get("/", obtenerProfesionales)
 router.get("/confirmar/:token", confirmar);
 router.post("/login", autenticar);
 router.post("/olvide-password", olvidePassword)
