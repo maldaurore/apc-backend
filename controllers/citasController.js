@@ -37,7 +37,19 @@ const obtenerCitas = async (req, res) => {
   }
 }
 
+const obtenerCitasProfesional = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const citas = await Cita.find().where('profesional').equals(id);
+    res.json(citas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al obtener las citas del profesional" });
+  }
+}
+
 export {
   guardarCita,
-  obtenerCitas
+  obtenerCitas,
+  obtenerCitasProfesional
 }
